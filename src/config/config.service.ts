@@ -24,10 +24,9 @@ export class ConfigService {
 
     public async getMongoConfig() {
         return {
-            uri: 'mongodb+srv://' + this.get('MONGO_USER') + ':' + this.get('MONGO_PASSWORD') + '@' + this.get('MONGO_HOST') + '/?w=majority',
+            uri: this.get('MONGO_URI'),
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            retryWrites: true
         };
     }
 }
