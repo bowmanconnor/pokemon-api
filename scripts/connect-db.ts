@@ -10,6 +10,7 @@ export const connectDB = async (uri: string = undefined) => {
     }
 
     // Connect to database
+    mongoose.set("strictQuery", false);
     await mongoose.connect(uri)
     console.log('Connected to MongoDB');
 }
