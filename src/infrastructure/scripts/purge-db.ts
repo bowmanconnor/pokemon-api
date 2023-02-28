@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 import * as mongoose from 'mongoose';
-import { Pokemon, PokemonSchema } from '../src/mongoDB/pokemon.schema';
+import { Pokemon, PokemonSchema } from '../mongoDB/schemas/pokemon.schema';
 import { connectDB, disconnectDB } from './connect-db';
 
 export const purge = async (PokemonModel: any): Promise<any> => {

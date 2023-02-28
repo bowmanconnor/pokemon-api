@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 import * as fs from 'fs';
-import { Pokemon, PokemonSchema } from '../src/mongoDB/pokemon.schema';
+import { Pokemon, PokemonSchema } from '../mongoDB/schemas/pokemon.schema';
 import { connectDB, disconnectDB } from './connect-db';
 
 export const seed = async (pokemonModel: any): Promise<any> => {
