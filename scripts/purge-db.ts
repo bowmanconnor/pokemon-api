@@ -1,41 +1,36 @@
 import * as dotenv from 'dotenv';
 import * as mongoose from 'mongoose';
 import { Pokemon, PokemonSchema } from '../src/mongoDB/pokemon.schema';
+import { connectDB, disconnectDB } from './connect-db';
 
-export const purge = async (print: boolean = true): Promise<boolean> => {
+export const purge = async (PokemonModel: any): Promise<any> => {
+    let ret = {
+        success: 0,
+        deletedCount: 0,
+        error: undefined
+    }
+
     try {
-        // Load environment variables
-        dotenv.config();
-
-        // Connect to database
-        await mongoose.connect(process.env.MONGO_URI);
-
-        if (print) {
-            console.log('Connected to MongoDB');
-        }
-
-        // Create Mongoose model from schema
-        const PokemonModel = mongoose.model<Pokemon>('Pokemon', PokemonSchema);
-
         // Delete all documents in the collection
-        await PokemonModel.deleteMany();
+        const deleteObj = await PokemonModel.deleteMany();
+        ret.success = deleteObj.acknowledged
+        ret.deletedCount = deleteObj.deletedCount
 
-        if (print) {
-            console.log('Database purged');
-        }
+        console.log('Database purged');
+        return ret;
 
-        return true;
     } catch (err) {
-        console.error('Failed to connect to MongoDB', err);
-        return false;
-    } finally {
-        // Close database connection
-        await mongoose.disconnect();
-
-        if (print) {
-            console.log('Disconnected from MongoDB');
-        }
+        console.error('Failed to purge database', err);
+        ret.error = err
+        return ret;
     }
 };
 
-purge()
+const run = async () => {
+    // await connectDB()
+    // const PokemonModel = mongoose.model<Pokemon>('Pokemon', PokemonSchema);
+    // await purge(PokemonModel)
+    // await disconnectDB()
+}
+
+run()
