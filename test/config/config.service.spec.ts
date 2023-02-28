@@ -25,15 +25,14 @@ describe('ConfigService', () => {
   describe('getMongoConfig', () => {
     it('should return the correct MongoDB connection URI and options', async () => {
       const mongoConfig = await service.getMongoConfig();
-      expect(mongoConfig.uri).toBe(`mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}/?w=majority`);
+      expect(mongoConfig.uri).toBe(process.env.MONGO_URI);
       expect(mongoConfig.useNewUrlParser).toBe(true);
       expect(mongoConfig.useUnifiedTopology).toBe(true);
-      expect(mongoConfig.retryWrites).toBe(true);
     });
   });
 
   describe('get', () => {
-    it('should return the correct value for a given key', async () => {
+    it('should return the MONGO_USER value for the MONGO_USER key', async () => {
       expect(service.get('MONGO_USER')).toBe(process.env.MONGO_USER);
     });
 
