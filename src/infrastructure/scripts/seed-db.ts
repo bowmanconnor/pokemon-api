@@ -5,7 +5,7 @@ import { connectDB, disconnectDB } from './connect-db';
 
 export const seed = async (pokemonModel: any): Promise<any> => {
     // Define seed data
-    const fileContents = fs.readFileSync('src/json/pokemons.JSON', 'utf8');
+    const fileContents = fs.readFileSync('src/infrastructure/json/pokemons.JSON', 'utf8');
     const pokemons = JSON.parse(fileContents);
 
     let ret = {
