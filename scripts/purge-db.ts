@@ -27,10 +27,12 @@ export const purge = async (PokemonModel: any): Promise<any> => {
 };
 
 const run = async () => {
-    // await connectDB()
-    // const PokemonModel = mongoose.model<Pokemon>('Pokemon', PokemonSchema);
-    // await purge(PokemonModel)
-    // await disconnectDB()
+    await connectDB()
+    const PokemonModel = mongoose.model<Pokemon>('Pokemon', PokemonSchema);
+    await purge(PokemonModel)
+    await disconnectDB()
 }
 
-run()
+if (require.main === module) {
+    run()
+}

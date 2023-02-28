@@ -17,15 +17,19 @@ export const seed = async (pokemonModel: any): Promise<any> => {
     // Insert seed data
     for (let pokemon of pokemons) {
         try {
-            let createdPokemon = await pokemonModel.create(pokemon)
+            let createdPokemon = new pokemonModel(pokemon)
+            await createdPokemon.validate()
+            await createdPokemon.save()
+
             console.log(`CREATED [${createdPokemon.id}] ${createdPokemon.name}`);
             ret.createdCount += 1;
         } catch (error) {
-            if (error.code = 11000) {
+            if (error.code == 11000) {
                 console.log(`DUPLICATE [${pokemon.id}] ${pokemon.name}`);
                 ret.duplicateCount += 1;
             } else {
-                console.log(error);
+                console.log(`ERROR [${pokemon.id}] ${pokemon.name}`, error);
+
                 ret.error = error
             }
         }
@@ -35,11 +39,13 @@ export const seed = async (pokemonModel: any): Promise<any> => {
 }
 
 const run = async () => {
-    // await connectDB()
-    // const PokemonModel = mongoose.model<Pokemon>('Pokemon', PokemonSchema);
-    // await seed(PokemonModel)
-    // await disconnectDB()
+    await connectDB()
+    const PokemonModel = mongoose.model<Pokemon>('Pokemon', PokemonSchema);
+    await seed(PokemonModel)
+    await disconnectDB()
 }
 
-run()
+if (require.main === module) {
+    run()
+}
 
