@@ -1,10 +1,10 @@
 
 import mongoose, { Model } from 'mongoose';
-import { Pokemon, PokemonSchema } from '../../src/infrastructure/mongoDB/pokemon.schema';
-import { seed } from '../../src/infrastructure/scripts/seed-db'
-import { purge } from '../../src/infrastructure/scripts/purge-db'
+import { Pokemon, PokemonSchema } from '../../../src/infrastructure/mongoDB/schemas/pokemon.schema';
+import { seed } from '../../../src/infrastructure/scripts/seed-db'
+import { purge } from '../../../src/infrastructure/scripts/purge-db'
 import { MongoMemoryServer } from 'mongodb-memory-server'
-import { connectDB, disconnectDB } from '../../src/infrastructure/scripts/connect-db';
+import { connectDB, disconnectDB } from '../../../src/infrastructure/scripts/connect-db';
 
 // Ignore console.log lines in seed, purge, connectDB, disconnectDB
 console.log = function () { };
