@@ -1,25 +1,28 @@
 import { Injectable } from '@nestjs/common';
 import { Pokemon } from 'src/domain/entity/pokemon';
-import { IPokemonRepository } from 'src/domain/repository/pokemon.repository.interface';
+import { IPokemonService } from 'src/domain/service/pokemon.service.interface';
 
 @Injectable()
-export class PokemonRepository implements IPokemonRepository {
+export class PokemonService implements IPokemonService {
     create(pokemon: Pokemon): Promise<Pokemon> {
         throw new Error('Method not implemented.');
     }
     delete(id: string): Promise<boolean> {
         throw new Error('Method not implemented.');
     }
-    findMany(query?: any, skip?: number, limit?: number): Promise<any> {
+    find(query?: any, skip?: number, limit?: number): Promise<Pokemon[]> {
         throw new Error('Method not implemented.');
     }
-    findOne(values: object): Promise<Pokemon> {
+    findByID(values: string): Promise<Pokemon> {
         throw new Error('Method not implemented.');
     }
-    updateOne(id: string, values: object): Promise<Pokemon> {
+    findByName(name: string): Promise<Pokemon> {
         throw new Error('Method not implemented.');
     }
-    distinct(attribute: string): Promise<any[]> {
+    setFavorite(id: string, favorite: boolean): Promise<Pokemon> {
+        throw new Error('Method not implemented.');
+    }
+    types(): Promise<any[]> {
         throw new Error('Method not implemented.');
     }
 }
