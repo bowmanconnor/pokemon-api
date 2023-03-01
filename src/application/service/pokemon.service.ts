@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Pokemon } from 'src/domain/entity/pokemon';
 import { IPokemonService } from 'src/domain/service/pokemon.service.interface';
-import { PokemonRepository } from 'src/infrastructure/mongoDB/pokemon.repository';
+import { PokemonRepository } from '../../infrastructure/mongoDB/pokemon.repository';
 
 @Injectable()
 export class PokemonService implements IPokemonService {

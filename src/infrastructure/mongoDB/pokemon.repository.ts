@@ -3,15 +3,12 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Pokemon } from 'src/domain/entity/pokemon';
 import { IPokemonRepository } from 'src/domain/repository/pokemon.repository.interface';
-import { MapperService } from './mapper/mapper.service';
-import { PokemonDocument, PokemonSchemaClass } from './schemas/pokemon.schema';
+import { PokemonDocument } from './schemas/pokemon.schema';
 
 @Injectable()
 export class PokemonRepository implements IPokemonRepository {
     constructor(
-        @InjectModel('Pokemon') private readonly model: Model<PokemonDocument>,
-        private readonly MapperService: MapperService
-    ) { }
+        @InjectModel('Pokemon') private readonly model: Model<PokemonDocument>) { }
 
     create(pokemon: Pokemon): Promise<Pokemon> {
         throw new Error('Method not implemented.');
@@ -23,15 +20,7 @@ export class PokemonRepository implements IPokemonRepository {
         throw new Error('Method not implemented.');
     }
     async findOne(values: object): Promise<Pokemon> {
-        console.log(values);
-
-
-        let pokemon = await this.model.find().exec()
-        console.log(pokemon);
-
-        // this.MapperService.pokemonSchemaToEntity(pokemon)
-        return
-
+        return await this.model.findOne(values).select('-_id -__v').exec()
     }
     updateOne(id: string, values: object): Promise<Pokemon> {
         throw new Error('Method not implemented.');
