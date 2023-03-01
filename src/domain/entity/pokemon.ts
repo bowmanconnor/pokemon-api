@@ -4,7 +4,7 @@ export class Pokemon {
     classification: string;
     types: string[]
     resistant: string[]
-    weakness: string[]
+    weaknesses: string[]
     weight: {
         minimum: string,
         maximum: string
@@ -42,3 +42,43 @@ export class Pokemon {
     }
     favorite: boolean;
 }
+
+// class HeightWeight {
+//     minimum: string
+//     maximum: string
+// }
+// class Evoutions {
+//     id: number
+//     name: string
+// }
+// class EvolutionRequirements {
+//     amount: number
+//     name: string
+// }
+// class Attacks {
+//     fast: AttackClass[]
+//     special: AttackClass[]
+// }
+// class AttackClass {
+//     name: string
+//     type: string
+//     damage: number
+// }
+// export class Pokemon {
+//     id: string;
+//     name: string;
+//     classification: string;
+//     types: string[];
+//     resistant: string[];
+//     weaknesses: string[];
+//     weight: HeightWeight;
+//     height: HeightWeight;
+//     fleeRate: number;
+//     "Previous evolution(s)"?: Evoutions[];
+//     evolutionRequirements?: EvolutionRequirements;
+//     evolutions?: Evoutions[];
+//     maxCP: number;
+//     maxHP: number;
+//     attacks: Attacks;
+//     favorite: boolean;
+// }

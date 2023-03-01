@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 import * as mongoose from 'mongoose';
-import { Pokemon, PokemonSchema } from '../mongoDB/schemas/pokemon.schema';
+import { PokemonSchemaClass, PokemonSchema, PokemonDocument } from '../mongoDB/schemas/pokemon.schema';
 import { connectDB, disconnectDB } from './connect-db';
 
 export const purge = async (PokemonModel: any): Promise<any> => {
@@ -28,7 +28,7 @@ export const purge = async (PokemonModel: any): Promise<any> => {
 
 const run = async () => {
     await connectDB()
-    const PokemonModel = mongoose.model<Pokemon>('Pokemon', PokemonSchema);
+    const PokemonModel = mongoose.model<PokemonDocument>('Pokemon', PokemonSchema);
     await purge(PokemonModel)
     await disconnectDB()
 }

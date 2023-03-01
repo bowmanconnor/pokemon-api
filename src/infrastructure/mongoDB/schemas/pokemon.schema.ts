@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 import { HeightWeightSchema, EvolutionSchema, EvolutionRequirementsSchema, AttacksSchema } from './nestSchemas.schema';
 
 @Schema()
-export class Pokemon {
+export class PokemonSchemaClass {
     @Prop({
         required: true,
         unique: true,
@@ -77,5 +77,5 @@ export class Pokemon {
     favorite: boolean;
 }
 
-export type PokemonDocument = Pokemon & Document;
-export const PokemonSchema = SchemaFactory.createForClass(Pokemon);
+export type PokemonDocument = PokemonSchemaClass & Document;
+export const PokemonSchema = SchemaFactory.createForClass(PokemonSchemaClass);

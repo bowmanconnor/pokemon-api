@@ -1,5 +1,5 @@
 import mongoose, { Model } from 'mongoose';
-import { Pokemon, PokemonSchema } from '../../../src/infrastructure/mongoDB/schemas/pokemon.schema';
+import { PokemonSchemaClass, PokemonSchema, PokemonDocument } from '../../../src/infrastructure/mongoDB/schemas/pokemon.schema';
 import { seed } from '../../../src/infrastructure/scripts/seed-db'
 import { purge } from '../../../src/infrastructure/scripts/purge-db'
 import { MongoMemoryServer } from 'mongodb-memory-server'
@@ -10,7 +10,7 @@ console.log = function () { };
 
 describe('seed-db', () => {
     let mongo = null
-    let PokemonModel: Model<Pokemon>
+    let PokemonModel: Model<PokemonDocument>
 
     beforeAll(async () => {
         // Create mock mongoDB database to not interfere with production database
@@ -18,7 +18,7 @@ describe('seed-db', () => {
         const uri = mongo.getUri();
         await connectDB(uri)
 
-        PokemonModel = mongoose.model<Pokemon>('Pokemon', PokemonSchema);
+        PokemonModel = mongoose.model<PokemonDocument>('Pokemon', PokemonSchema);
 
     });
 
