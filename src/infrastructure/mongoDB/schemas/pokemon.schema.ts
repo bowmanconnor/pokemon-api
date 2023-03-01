@@ -4,6 +4,9 @@ import { HeightWeightSchema, EvolutionSchema, EvolutionRequirementsSchema, Attac
 
 @Schema()
 export class PokemonSchemaClass {
+    @Prop({ type: String, select: false })
+    _id: string;
+
     @Prop({
         required: true,
         unique: true,

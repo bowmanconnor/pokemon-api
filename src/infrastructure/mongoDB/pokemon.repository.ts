@@ -20,7 +20,7 @@ export class PokemonRepository implements IPokemonRepository {
         throw new Error('Method not implemented.');
     }
     async findOne(values: object): Promise<Pokemon> {
-        return await this.model.findOne(values).select('-_id -__v').exec()
+        return await this.model.findOne(values).select('-__v').exec()
     }
     updateOne(id: string, values: object): Promise<Pokemon> {
         throw new Error('Method not implemented.');
