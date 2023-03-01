@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { HeightWeightSchema, EvolutionSchema, EvolutionRequirementsSchema, AttacksSchema } from './nestSchemas.schema';
+import { HeightWeightSchema, EvolutionSchema, EvolutionRequirementsSchema, AttacksSchema, Evolution, EvolutionRequirements, HeightWeight, AttackTypes, Attacks } from './nestSchemas.schema';
 
 @Schema()
 export class PokemonSchemaClass {
@@ -30,14 +30,14 @@ export class PokemonSchemaClass {
         required: true,
         type: HeightWeightSchema,
     })
-    weight: typeof HeightWeightSchema;
+    weight: HeightWeight;
 
 
     @Prop({
         required: true,
         type: HeightWeightSchema,
     })
-    height: typeof HeightWeightSchema;
+    height: HeightWeight;
 
     @Prop({ required: true, type: Number })
     fleeRate: number;
@@ -47,19 +47,19 @@ export class PokemonSchemaClass {
             EvolutionSchema,
         ],
     })
-    "Previous evolution(s)"?: typeof EvolutionSchema[];
+    "Previous evolution(s)"?: Evolution[];
 
     @Prop({
         type: EvolutionRequirementsSchema,
     })
-    evolutionRequirements?: typeof EvolutionRequirementsSchema;
+    evolutionRequirements?: EvolutionRequirements;
 
     @Prop({
         type: [
             EvolutionSchema
         ],
     })
-    evolutions?: typeof EvolutionSchema[];
+    evolutions?: Evolution[];
 
     @Prop({ required: true, type: Number })
     maxCP: number;
@@ -71,7 +71,7 @@ export class PokemonSchemaClass {
         required: true,
         type: AttacksSchema
     })
-    attacks: typeof AttacksSchema;
+    attacks: Attacks;
 
     @Prop({ required: true, default: false, type: Boolean })
     favorite: boolean;
