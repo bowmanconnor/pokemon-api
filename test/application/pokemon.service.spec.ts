@@ -1,4 +1,7 @@
+import { getModelToken } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
+import { PokemonRepository } from '../../src/infrastructure/mongoDB/pokemon.repository';
+import { PokemonController } from '../../src/presentation/pokemon.controller';
 import { PokemonService } from '../../src/application/service/pokemon.service';
 
 describe('PokemonService', () => {
@@ -6,7 +9,8 @@ describe('PokemonService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [PokemonService],
+      providers: [PokemonRepository, PokemonService, { provide: getModelToken('Pokemon'), useValue: jest.fn() }],
+      controllers: [PokemonController]
     }).compile();
 
     service = module.get<PokemonService>(PokemonService);
@@ -16,3 +20,4 @@ describe('PokemonService', () => {
     expect(service).toBeDefined();
   });
 });
+
