@@ -16,9 +16,11 @@ export class PokemonRepository implements IPokemonRepository {
     delete(id: string): Promise<boolean> {
         throw new Error('Method not implemented.');
     }
-    findMany(query?: any, skip?: number, limit?: number): Promise<any> {
-        throw new Error('Method not implemented.');
+    async findMany(query: any, skip: number = 0, limit: number = 10): Promise<any> {
+        const { name, ...filterQuery } = query
+        return await this.model.find({ "name": { "$regex": query.name || "", "$options": "i" }, ...filterQuery }).skip(skip).limit(limit).exec();
     }
+
     async findOne(values: object): Promise<Pokemon> {
         return await this.model.findOne(values).select('-__v -_id').exec()
     }
