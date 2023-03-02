@@ -4,7 +4,7 @@ import { PokemonService } from '../../src/application/service/pokemon.service';
 import { PokemonRepository } from '../../src/infrastructure/mongoDB/pokemon.repository';
 import { PokemonController } from '../../src/presentation/pokemon.controller';
 import * as fs from 'fs';
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 
 describe("PokemonController", () => {
   let pokemonController: PokemonController;
@@ -23,7 +23,16 @@ describe("PokemonController", () => {
     findByName: jest.fn().mockImplementation(name => {
       let pokemon = pokemons.find(p => p.name === name)
       return pokemon
-    })
+    }),
+
+    setFavorite: jest.fn().mockImplementation((id, favorite) => {
+      let pokemon = pokemons.find(p => p.id === id)
+      if (pokemon) {
+        pokemon.favorite = favorite
+      }
+      return pokemon
+    }),
+
   }
 
 
@@ -76,6 +85,44 @@ describe("PokemonController", () => {
 
       await expect(result).rejects.toBeInstanceOf(NotFoundException);
       expect(mockService.findByName).toHaveBeenCalled()
+    })
+  });
+
+  describe("favorite", () => {
+    it('should set favorite on a valid pokemon', async () => {
+      const id = "001"
+      let result = await pokemonController.favorite(id)
+
+      expect(mockService.setFavorite).toHaveBeenCalled()
+      expect(result.id).toBe(id)
+      expect(result.favorite).toBe(true)
+    })
+
+    it('should set favorite on an invalid pokemon', async () => {
+      const id = "000"
+      const result = pokemonController.favorite(id);
+
+      await expect(result).rejects.toBeInstanceOf(BadRequestException);
+      expect(mockService.setFavorite).toHaveBeenCalled()
+    })
+  });
+
+  describe("unfavorite", () => {
+    it('should set unfavorite on a valid pokemon', async () => {
+      const id = "001"
+      let result = await pokemonController.unfavorite(id)
+
+      expect(mockService.setFavorite).toHaveBeenCalled()
+      expect(result.id).toBe(id)
+      expect(result.favorite).toBe(false)
+    })
+
+    it('should set unfavorite on an invalid pokemon', async () => {
+      const id = "000"
+      const result = pokemonController.unfavorite(id);
+
+      await expect(result).rejects.toBeInstanceOf(BadRequestException);
+      expect(mockService.setFavorite).toHaveBeenCalled()
     })
   });
 
