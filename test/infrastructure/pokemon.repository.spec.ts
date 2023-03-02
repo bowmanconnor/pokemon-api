@@ -88,6 +88,46 @@ describe("PokemonRepository", () => {
                 expect(result).toBe(null)
             })
         })
+
+        describe("by Name", () => {
+            it('should find by valid name with empty database', async () => {
+                // Get pokemon with id "001". Should call mock repository findOne
+                const values = { name: "Bulbasaur" }
+                let result = await pokemonRepository.findOne(values)
+
+                expect(result).toBe(null)
+            })
+
+            it('should find by invalid name with empty database', async () => {
+                // Get invalid pokemon with id "000". Should call mock repository findOne. Should throw exception
+                const values = { name: "IBM" }
+                let result = await pokemonRepository.findOne(values)
+
+                expect(result).toBe(null)
+            })
+
+            it('should find by valid name with populated database', async () => {
+                // Seed the database
+                await seed(PokemonModel)
+
+                // Get pokemon with id "001". Should call mock repository findOne
+                const values = { name: "Bulbasaur" }
+                let result = await pokemonRepository.findOne(values)
+                expect(result.name).toBe(values.name)
+
+            })
+
+            it('should find by invalid name with populated database', async () => {
+                // Seed the database
+                await seed(PokemonModel)
+
+                // Get invalid pokemon with id "000". Should call mock repository findOne. Should throw exception
+                const values = { name: "IBM" }
+                let result = await pokemonRepository.findOne(values)
+
+                expect(result).toBe(null)
+            })
+        });
     });
 
 });
