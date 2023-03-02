@@ -32,6 +32,12 @@ describe("PokemonService", () => {
       }
       return pokemon
     }),
+
+    distinct: jest.fn().mockImplementation((attribute) => {
+      const typesArray = [...pokemons.map((pokemon) => pokemon[attribute])];
+      const uniqueValues = [...new Set(typesArray.flat())];
+      return uniqueValues
+    }),
   }
 
   beforeAll(async () => {
@@ -134,4 +140,13 @@ describe("PokemonService", () => {
     })
   });
 
+  describe("types", () => {
+    it('should return distinct values of types', async () => {
+      const attribute = "types"
+      let result = await pokemonService.types()
+
+      expect(mockRepository.distinct).toHaveBeenCalled()
+      expect(result).toBeInstanceOf(Array<String>)
+    })
+  });
 });

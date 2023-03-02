@@ -123,6 +123,7 @@ describe("PokemonRepository", () => {
 
             expect(result).toBe(null)
         })
+
         it('should update a valid pokemon with invalid values on an empty database', async () => {
             // Update pokemon with id "001" with valid options {banana: true}
             const id = "001"
@@ -144,6 +145,7 @@ describe("PokemonRepository", () => {
             expect(result.favorite).toBe(values.favorite)
 
         })
+
         it('should update a valid pokemon with invalid values on a populated database', async () => {
             // Update pokemon with id "001" with valid options {banana: true}
             await seed(PokemonModel)
@@ -166,6 +168,7 @@ describe("PokemonRepository", () => {
 
             expect(result).toBe(null)
         })
+
         it('should update an invalid pokemon with invalid values on a populated database', async () => {
             // Update pokemon with id "000" with valid options {banana: true}
             await seed(PokemonModel)
@@ -175,6 +178,44 @@ describe("PokemonRepository", () => {
             let result = await pokemonRepository.updateOne(id, values)
 
             await expect(result).toBe(null)
+        })
+    })
+
+    describe("distinct", () => {
+        it('should return distinct values of a valid attribute on an empty database', async () => {
+            const attribute = "types"
+            let result = await pokemonRepository.distinct(attribute)
+
+            expect(result.length).toBe(0)
+            expect(result).toBeInstanceOf(Array<String>)
+        })
+
+        it('should return distinct values of a invalid attribute on an empty database', async () => {
+            const attribute = "shoes"
+            let result = await pokemonRepository.distinct(attribute)
+
+            expect(result.length).toBe(0)
+            expect(result).toBeInstanceOf(Array<String>)
+        })
+
+        it('should return distinct values of a valid attribute on a populated database', async () => {
+            await seed(PokemonModel)
+
+            const attribute = "types"
+            let result = await pokemonRepository.distinct(attribute)
+
+            expect(result.length).toBeGreaterThan(0)
+            expect(result).toBeInstanceOf(Array<String>)
+        })
+
+        it('should return distinct values of an invalid attribute on a populated database', async () => {
+            await seed(PokemonModel)
+
+            const attribute = "shoes"
+            let result = await pokemonRepository.distinct(attribute)
+
+            expect(result.length).toBe(0)
+            expect(result).toBeInstanceOf(Array<String>)
         })
     })
 });
