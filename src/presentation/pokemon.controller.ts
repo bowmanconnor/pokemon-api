@@ -20,4 +20,18 @@ export class PokemonController {
         }
         return pokemon
     }
+
+    /**
+     * Find a pokemon by naem
+     * @param name - name of the pokemon to find
+     */
+    @Get('name/:name')
+    async findByName(@Param('name') name: string) {
+
+        const pokemon = await this.PokemonService.findByName(name);
+        if (!pokemon) {
+            throw new NotFoundException(`Pokemon with name: ${name} does not exist`)
+        }
+        return pokemon
+    }
 }
