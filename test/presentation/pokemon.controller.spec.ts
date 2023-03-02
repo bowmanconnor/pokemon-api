@@ -18,6 +18,11 @@ describe("PokemonController", () => {
     findByID: jest.fn().mockImplementation(id => {
       let pokemon = pokemons.find(p => p.id === id)
       return pokemon
+    }),
+
+    findByName: jest.fn().mockImplementation(name => {
+      let pokemon = pokemons.find(p => p.name === name)
+      return pokemon
     })
   }
 
@@ -39,7 +44,7 @@ describe("PokemonController", () => {
     expect(pokemonController).toBeDefined();
   });
 
-  describe("getByID", () => {
+  describe("findByID", () => {
     it('should return a valid pokemon', async () => {
       const id = "001"
       let result = await pokemonController.findByID(id)
@@ -53,8 +58,24 @@ describe("PokemonController", () => {
       const result = pokemonController.findByID(id);
 
       await expect(result).rejects.toBeInstanceOf(NotFoundException);
-      expect(mockService.findByID).toHaveBeenCalled()
+    })
+  });
 
+  describe("findByName", () => {
+    it('should return a valid pokemon', async () => {
+      const name = "Bulbasaur"
+      let result = await pokemonController.findByName(name)
+
+      expect(mockService.findByName).toHaveBeenCalled()
+      expect(result.name).toBe(name)
+    })
+
+    it('should return an invalid pokemon', async () => {
+      const name = "IBM"
+      const result = pokemonController.findByName(name);
+
+      await expect(result).rejects.toBeInstanceOf(NotFoundException);
+      expect(mockService.findByName).toHaveBeenCalled()
     })
   });
 

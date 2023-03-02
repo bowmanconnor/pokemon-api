@@ -19,8 +19,9 @@ export class PokemonService implements IPokemonService {
         let values = { "id": id }
         return await this.PokemonReository.findOne(values);
     }
-    findByName(name: string): Promise<Pokemon> {
-        throw new Error('Method not implemented.');
+    async findByName(name: string): Promise<Pokemon> {
+        let values = { "name": name }
+        return await this.PokemonReository.findOne(values);
     }
     setFavorite(id: string, favorite: boolean): Promise<Pokemon> {
         throw new Error('Method not implemented.');
