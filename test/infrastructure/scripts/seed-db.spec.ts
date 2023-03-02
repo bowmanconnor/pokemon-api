@@ -16,7 +16,8 @@ describe('seed-db', () => {
         // Create mock mongoDB database to not interfere with production database
         mongo = await MongoMemoryServer.create();
         const uri = mongo.getUri();
-        await connectDB(uri)
+        mongoose.set('strictQuery', false)
+        await mongoose.connect(uri)
 
         PokemonModel = mongoose.model<PokemonDocument>('Pokemon', PokemonSchema);
 
@@ -28,14 +29,12 @@ describe('seed-db', () => {
     });
 
     afterAll(async () => {
-        if (mongo) {
-            await disconnectDB()
-            await mongo.stop();
-        }
+        await mongoose.disconnect()
+        await mongo.stop();
     });
 
     it('should create all seed data', async () => {
-        // Call the seed function with the mock model
+        // Call the seed function to load database
         const result = await seed(PokemonModel);
 
         expect(result.createdCount).toBe(151);
