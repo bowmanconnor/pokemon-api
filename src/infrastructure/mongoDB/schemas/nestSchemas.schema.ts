@@ -3,8 +3,8 @@ import { Document } from 'mongoose';
 
 @Schema()
 export class HeightWeight {
-    @Prop({ type: String, select: false })
-    _id: string;
+    @Prop()
+    _id: false;
 
     @Prop({
         required: true,
@@ -24,8 +24,8 @@ export const HeightWeightSchema = SchemaFactory.createForClass(HeightWeight);
 
 @Schema()
 export class Evolution {
-    @Prop({ type: String, select: false })
-    _id: string;
+    @Prop()
+    _id: false;
 
     @Prop({
         required: true,
@@ -44,8 +44,8 @@ export const EvolutionSchema = SchemaFactory.createForClass(Evolution);
 
 @Schema()
 export class EvolutionRequirements {
-    @Prop({ type: String, select: false })
-    _id: string;
+    @Prop()
+    _id: false;
 
     @Prop({
         required: true,
@@ -65,8 +65,8 @@ export const EvolutionRequirementsSchema = SchemaFactory.createForClass(Evolutio
 
 @Schema()
 export class AttackTypes {
-    @Prop({ type: String, select: false })
-    _id: string;
+    @Prop()
+    _id: false;
 
     @Prop({
         required: true,
@@ -91,8 +91,8 @@ export const AttackTypesSchema = SchemaFactory.createForClass(AttackTypes);
 
 @Schema()
 export class Attacks {
-    @Prop({ type: String, select: false })
-    _id: string;
+    @Prop()
+    _id: false;
 
     @Prop({
         required: true,
