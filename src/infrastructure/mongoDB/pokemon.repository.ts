@@ -34,7 +34,7 @@ export class PokemonRepository implements IPokemonRepository {
         return await this.findOne({ "id": id })
     }
 
-    distinct(attribute: string): Promise<any[]> {
-        throw new Error('Method not implemented.');
+    async distinct(attribute: string): Promise<any[]> {
+        return this.model.distinct(attribute)
     }
 }

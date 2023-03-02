@@ -10,20 +10,19 @@ export class PokemonController {
     ) { }
 
     /**
-     * Find a pokemon by id
-     * @param id - id of the pokemon to find
+     * Get a list of all distinct pokemon types
      */
-    @Get(':id')
-    async findByID(@Param('id') id: string) {
-        const pokemon = await this.PokemonService.findByID(id);
-        if (!pokemon) {
-            throw new NotFoundException(`Pokemon with ID: ${id} does not exist`)
+    @Get('types')
+    async types() {
+        const types = await this.PokemonService.types();
+        if (!types) {
+            throw new NotFoundException("No types found")
         }
-        return pokemon
+        return types
     }
 
     /**
-     * Find a pokemon by naem
+     * Find a pokemon by name
      * @param name - name of the pokemon to find
      */
     @Get('name/:name')
@@ -32,6 +31,19 @@ export class PokemonController {
         const pokemon = await this.PokemonService.findByName(name);
         if (!pokemon) {
             throw new NotFoundException(`Pokemon with name: ${name} does not exist`)
+        }
+        return pokemon
+    }
+
+    /**
+     * Find a pokemon by id
+     * @param id - id of the pokemon to find
+     */
+    @Get(':id')
+    async findByID(@Param('id') id: string) {
+        const pokemon = await this.PokemonService.findByID(id);
+        if (!pokemon) {
+            throw new NotFoundException(`Pokemon with ID: ${id} does not exist`)
         }
         return pokemon
     }
@@ -61,5 +73,6 @@ export class PokemonController {
         }
         return new PokemonSummaryDto(pokemon)
     }
+
 
 }
