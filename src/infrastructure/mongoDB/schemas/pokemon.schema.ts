@@ -1,9 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-import { HeightWeightSchema, EvolutionSchema, EvolutionRequirementsSchema, AttacksSchema } from './nestSchemas.schema';
+import mongoose, { Document } from 'mongoose';
+import { HeightWeightSchema, EvolutionSchema, EvolutionRequirementsSchema, AttacksSchema, Evolution, EvolutionRequirements, HeightWeight, AttackTypes, Attacks } from './nestSchemas.schema';
 
 @Schema()
-export class Pokemon {
+export class PokemonSchemaClass {
     @Prop({
         required: true,
         unique: true,
@@ -30,14 +30,14 @@ export class Pokemon {
         required: true,
         type: HeightWeightSchema,
     })
-    weight: typeof HeightWeightSchema;
+    weight: HeightWeight;
 
 
     @Prop({
         required: true,
         type: HeightWeightSchema,
     })
-    height: typeof HeightWeightSchema;
+    height: HeightWeight;
 
     @Prop({ required: true, type: Number })
     fleeRate: number;
@@ -47,19 +47,19 @@ export class Pokemon {
             EvolutionSchema,
         ],
     })
-    "Previous evolution(s)"?: typeof EvolutionSchema[];
+    "Previous evolution(s)"?: Evolution[];
 
     @Prop({
         type: EvolutionRequirementsSchema,
     })
-    evolutionRequirements?: typeof EvolutionRequirementsSchema;
+    evolutionRequirements?: EvolutionRequirements;
 
     @Prop({
         type: [
             EvolutionSchema
         ],
     })
-    evolutions?: typeof EvolutionSchema[];
+    evolutions?: Evolution[];
 
     @Prop({ required: true, type: Number })
     maxCP: number;
@@ -71,11 +71,11 @@ export class Pokemon {
         required: true,
         type: AttacksSchema
     })
-    attacks: typeof AttacksSchema;
+    attacks: Attacks;
 
     @Prop({ required: true, default: false, type: Boolean })
     favorite: boolean;
 }
 
-export type PokemonDocument = Pokemon & Document;
-export const PokemonSchema = SchemaFactory.createForClass(Pokemon);
+export type PokemonDocument = PokemonSchemaClass & Document;
+export const PokemonSchema = SchemaFactory.createForClass(PokemonSchemaClass);

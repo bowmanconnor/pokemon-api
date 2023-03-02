@@ -1,5 +1,5 @@
 import mongoose, { Model } from 'mongoose';
-import { Pokemon, PokemonSchema } from '../../../src/infrastructure/mongoDB/schemas/pokemon.schema';
+import { PokemonSchemaClass, PokemonSchema, PokemonDocument } from '../../../src/infrastructure/mongoDB/schemas/pokemon.schema';
 import { seed } from '../../../src/infrastructure/scripts/seed-db'
 import { purge } from '../../../src/infrastructure/scripts/purge-db'
 import { MongoMemoryServer } from 'mongodb-memory-server'
@@ -10,15 +10,16 @@ console.log = function () { };
 
 describe('seed-db', () => {
     let mongo = null
-    let PokemonModel: Model<Pokemon>
+    let PokemonModel: Model<PokemonDocument>
 
     beforeAll(async () => {
         // Create mock mongoDB database to not interfere with production database
         mongo = await MongoMemoryServer.create();
         const uri = mongo.getUri();
-        await connectDB(uri)
+        mongoose.set('strictQuery', false)
+        await mongoose.connect(uri)
 
-        PokemonModel = mongoose.model<Pokemon>('Pokemon', PokemonSchema);
+        PokemonModel = mongoose.model<PokemonDocument>('Pokemon', PokemonSchema);
 
     });
 
@@ -28,14 +29,12 @@ describe('seed-db', () => {
     });
 
     afterAll(async () => {
-        if (mongo) {
-            await disconnectDB()
-            await mongo.stop();
-        }
+        await mongoose.disconnect()
+        await mongo.stop();
     });
 
     it('should create all seed data', async () => {
-        // Call the seed function with the mock model
+        // Call the seed function to load database
         const result = await seed(PokemonModel);
 
         expect(result.createdCount).toBe(151);

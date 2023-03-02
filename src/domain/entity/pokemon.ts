@@ -4,7 +4,7 @@ export class Pokemon {
     classification: string;
     types: string[]
     resistant: string[]
-    weakness: string[]
+    weaknesses: string[]
     weight: {
         minimum: string,
         maximum: string
@@ -42,3 +42,4 @@ export class Pokemon {
     }
     favorite: boolean;
 }
+

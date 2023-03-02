@@ -1,11 +1,11 @@
 import * as mongoose from 'mongoose';
 import * as fs from 'fs';
-import { Pokemon, PokemonSchema } from '../mongoDB/schemas/pokemon.schema';
+import { PokemonSchemaClass, PokemonSchema, PokemonDocument } from '../mongoDB/schemas/pokemon.schema';
 import { connectDB, disconnectDB } from './connect-db';
 
 export const seed = async (pokemonModel: any): Promise<any> => {
     // Define seed data
-    const fileContents = fs.readFileSync('src/json/pokemons.JSON', 'utf8');
+    const fileContents = fs.readFileSync('src/infrastructure/json/pokemons.JSON', 'utf8');
     const pokemons = JSON.parse(fileContents);
 
     let ret = {
@@ -40,7 +40,7 @@ export const seed = async (pokemonModel: any): Promise<any> => {
 
 const run = async () => {
     await connectDB()
-    const PokemonModel = mongoose.model<Pokemon>('Pokemon', PokemonSchema);
+    const PokemonModel = mongoose.model<PokemonDocument>('Pokemon', PokemonSchema);
     await seed(PokemonModel)
     await disconnectDB()
 }

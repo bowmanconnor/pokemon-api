@@ -2,7 +2,10 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 @Schema()
-class HeightWeight {
+export class HeightWeight {
+    @Prop()
+    _id: false;
+
     @Prop({
         required: true,
         type: String
@@ -14,16 +17,21 @@ class HeightWeight {
         type: String
     })
     maximum: string;
+
 }
+export type HeightWeightDocument = HeightWeight & Document;
 export const HeightWeightSchema = SchemaFactory.createForClass(HeightWeight);
 
 @Schema()
-class Evolution {
+export class Evolution {
+    @Prop()
+    _id: false;
+
     @Prop({
         required: true,
         type: Number
     })
-    id: string;
+    id: number;
 
     @Prop({
         required: true,
@@ -35,12 +43,15 @@ export const EvolutionSchema = SchemaFactory.createForClass(Evolution);
 
 
 @Schema()
-class EvolutionRequirements {
+export class EvolutionRequirements {
+    @Prop()
+    _id: false;
+
     @Prop({
         required: true,
         type: Number
     })
-    amount: string;
+    amount: number;
 
     @Prop({
         required: true,
@@ -53,7 +64,10 @@ export const EvolutionRequirementsSchema = SchemaFactory.createForClass(Evolutio
 
 
 @Schema()
-class AttackTypes {
+export class AttackTypes {
+    @Prop()
+    _id: false;
+
     @Prop({
         required: true,
         type: String
@@ -64,20 +78,22 @@ class AttackTypes {
         required: true,
         type: String
     })
-    type: String;
+    type: string;
 
 
     @Prop({
         required: true,
         type: Number
     })
-    damage: String;
+    damage: number;
 }
 export const AttackTypesSchema = SchemaFactory.createForClass(AttackTypes);
 
-
 @Schema()
 export class Attacks {
+    @Prop()
+    _id: false;
+
     @Prop({
         required: true,
         type: [AttackTypesSchema],
