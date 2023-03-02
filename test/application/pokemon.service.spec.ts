@@ -21,7 +21,17 @@ describe("PokemonService", () => {
 
       let pokemon = pokemons.find(p => p.id === id) || pokemons.find(p => p.name === name)
       return pokemon
-    })
+    }),
+
+    updateOne: jest.fn().mockImplementation((id, values) => {
+      let favoriteStatus = values["favorite"]
+      let pokemon = pokemons.find(p => p.id === id)
+
+      if (pokemon !== undefined) {
+        pokemon.favorite = favoriteStatus
+      }
+      return pokemon
+    }),
   }
 
   beforeAll(async () => {
@@ -51,7 +61,7 @@ describe("PokemonService", () => {
     })
 
     it('should return an invalid pokemon', async () => {
-      // Get invalid pokemon with id "000". Should call mock repository findOne. Should throw exception
+      // Get invalid pokemon with id "000". Should call mock repository findOne.
 
       const id = "000"
       let result = await pokemonService.findByID(id)
@@ -63,7 +73,7 @@ describe("PokemonService", () => {
 
   describe("getByName", () => {
     it('should return a valid pokemon', async () => {
-      // Get pokemon with id "001". Should call mock repository findOne
+      // Get pokemon with name "Bulbasaur". Should call mock repository findOne
       const name = "Bulbasaur"
       let result = await pokemonService.findByName(name)
 
@@ -72,10 +82,52 @@ describe("PokemonService", () => {
     })
 
     it('should return an invalid pokemon', async () => {
-      // Get invalid pokemon with id "000". Should call mock repository findOne. Should throw exception
+      // Get invalid pokemon with id "IBM". Should call mock repository findOne.
 
       const name = "IBM"
       let result = await pokemonService.findByName(name)
+
+      expect(mockRepository.findOne).toHaveBeenCalled()
+      expect(result).toBe(undefined)
+    })
+  });
+
+  describe("setFavorite", () => {
+    it('should change a valid pokemons favorite status to true', async () => {
+      // Set pokemon with id "001" favorite status to true. Should call mock repository updateOne
+      const id = "001"
+      const favoriteStatus = true
+      let result = await pokemonService.setFavorite(id, favoriteStatus)
+
+      expect(mockRepository.updateOne).toHaveBeenCalled()
+      expect(result.favorite).toBe(favoriteStatus)
+    })
+
+    it('should change an invalid pokemons favorite status to true', async () => {
+      // Set pokemon with id "000" favorite status to true. Should call mock repository updateOne
+      const id = "000"
+      const favoriteStatus = true
+      let result = await pokemonService.setFavorite(id, favoriteStatus)
+
+      expect(mockRepository.findOne).toHaveBeenCalled()
+      expect(result).toBe(undefined)
+    })
+
+    it('should change a valid pokemons favorite status to false', async () => {
+      // Set pokemon with id "001" favorite status to true. Should call mock repository updateOne
+      const id = "001"
+      const favoriteStatus = false
+      let result = await pokemonService.setFavorite(id, favoriteStatus)
+
+      expect(mockRepository.updateOne).toHaveBeenCalled()
+      expect(result.favorite).toBe(favoriteStatus)
+    })
+
+    it('should change an invalid pokemons favorite status to false', async () => {
+      // Set pokemon with id "000" favorite status to true. Should call mock repository updateOne
+      const id = "000"
+      const favoriteStatus = false
+      let result = await pokemonService.setFavorite(id, favoriteStatus)
 
       expect(mockRepository.findOne).toHaveBeenCalled()
       expect(result).toBe(undefined)

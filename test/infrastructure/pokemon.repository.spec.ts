@@ -50,7 +50,7 @@ describe("PokemonRepository", () => {
 
     describe("findOne", () => {
         describe("by ID", () => {
-            it('should find by valid ID with empty database', async () => {
+            it('should find by ID on an empty database', async () => {
                 // Get pokemon with id "001". Should call mock repository findOne
                 const values = { id: "001" }
                 let result = await pokemonRepository.findOne(values)
@@ -58,15 +58,7 @@ describe("PokemonRepository", () => {
                 expect(result).toBe(null)
             })
 
-            it('should find by invalid ID with empty database', async () => {
-                // Get invalid pokemon with id "000". Should call mock repository findOne. Should throw exception
-                const values = { id: "000" }
-                let result = await pokemonRepository.findOne(values)
-
-                expect(result).toBe(null)
-            })
-
-            it('should find by valid ID with populated database', async () => {
+            it('should find by valid ID on a populated database', async () => {
                 // Seed the database
                 await seed(PokemonModel)
 
@@ -77,7 +69,7 @@ describe("PokemonRepository", () => {
 
             })
 
-            it('should find by invalid ID with populated database', async () => {
+            it('should find by invalid ID on a populated database', async () => {
                 // Seed the database
                 await seed(PokemonModel)
 
@@ -90,7 +82,7 @@ describe("PokemonRepository", () => {
         })
 
         describe("by Name", () => {
-            it('should find by valid name with empty database', async () => {
+            it('should find by name on an empty database', async () => {
                 // Get pokemon with id "001". Should call mock repository findOne
                 const values = { name: "Bulbasaur" }
                 let result = await pokemonRepository.findOne(values)
@@ -98,15 +90,7 @@ describe("PokemonRepository", () => {
                 expect(result).toBe(null)
             })
 
-            it('should find by invalid name with empty database', async () => {
-                // Get invalid pokemon with id "000". Should call mock repository findOne. Should throw exception
-                const values = { name: "IBM" }
-                let result = await pokemonRepository.findOne(values)
-
-                expect(result).toBe(null)
-            })
-
-            it('should find by valid name with populated database', async () => {
+            it('should find by valid name on a populated database', async () => {
                 // Seed the database
                 await seed(PokemonModel)
 
@@ -117,7 +101,7 @@ describe("PokemonRepository", () => {
 
             })
 
-            it('should find by invalid name with populated database', async () => {
+            it('should find by invalid name on a populated database', async () => {
                 // Seed the database
                 await seed(PokemonModel)
 
@@ -130,4 +114,68 @@ describe("PokemonRepository", () => {
         });
     });
 
+    describe("updateOne", () => {
+        it('should update a valid pokemon with valid values on an empty database', async () => {
+            // Update pokemon with id "001" with valid options {favorite: true}
+            const id = "001"
+            const values = { "favorite": true }
+            let result = await pokemonRepository.updateOne(id, values)
+
+            expect(result).toBe(null)
+        })
+        it('should update a valid pokemon with invalid values on an empty database', async () => {
+            // Update pokemon with id "001" with valid options {banana: true}
+            const id = "001"
+            const values = { "banana": true }
+            let result = await pokemonRepository.updateOne(id, values)
+            console.log(result);
+
+            expect(result).toBe(null)
+        })
+
+        it('should update a valid pokemon with valid values on a populated database', async () => {
+            // Update pokemon with id "001" with valid options {favorite: true}
+            await seed(PokemonModel)
+
+            const id = "001"
+            const values = { "favorite": true }
+            let result = await pokemonRepository.updateOne(id, values)
+
+            expect(result.favorite).toBe(values.favorite)
+
+        })
+        it('should update a valid pokemon with invalid values on a populated database', async () => {
+            // Update pokemon with id "001" with valid options {banana: true}
+            await seed(PokemonModel)
+
+            const id = "001"
+            const values = { "banana": true }
+            let result = await pokemonRepository.updateOne(id, values)
+
+            await expect(result['banana']).toBe(undefined)
+
+        })
+
+        it('should update an invalid pokemon with valid values on a populated database', async () => {
+            // Update pokemon with id "000" with valid options {favorite: true}
+            await seed(PokemonModel)
+
+            const id = "000"
+            const values = { "favorite": true }
+            let result = await pokemonRepository.updateOne(id, values)
+
+            expect(result).toBe(null)
+        })
+        it('should update an invalid pokemon with invalid values on a populated database', async () => {
+            // Update pokemon with id "000" with valid options {banana: true}
+            await seed(PokemonModel)
+
+            const id = "000"
+            const values = { "banana": true }
+            let result = await pokemonRepository.updateOne(id, values)
+
+            await expect(result).toBe(null)
+        })
+    })
 });
+
