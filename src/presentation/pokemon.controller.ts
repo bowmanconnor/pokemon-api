@@ -1,5 +1,6 @@
-import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
+import { BadRequestException, Controller, Get, NotFoundException, Param, Put } from '@nestjs/common';
 import { PokemonService } from '../application/service/pokemon.service';
+import { PokemonSummaryDto } from './dto/summaryDTO';
 
 @Controller('pokemon')
 export class PokemonController {
@@ -34,4 +35,31 @@ export class PokemonController {
         }
         return pokemon
     }
+
+    /**
+    * Set a pokemon as favorite
+    * @param id - id of the pokemon to set as favorite
+    */
+    @Put(':id/favorite')
+    async favorite(@Param('id') id: string) {
+        const pokemon = await this.PokemonService.setFavorite(id, true);
+        if (!pokemon) {
+            throw new BadRequestException(`Pokemon with ID: ${id} does not exist`)
+        }
+        return new PokemonSummaryDto(pokemon)
+    }
+
+    /**
+     * Unset a pokemon as favorite
+     * @param id - id of the pokemon to unset as favorite
+     */
+    @Put(':id/unfavorite')
+    async unfavorite(@Param('id') id: string) {
+        const pokemon = await this.PokemonService.setFavorite(id, false);
+        if (!pokemon) {
+            throw new BadRequestException(`Pokemon with ID: ${id} does not exist`)
+        }
+        return new PokemonSummaryDto(pokemon)
+    }
+
 }

@@ -22,9 +22,18 @@ export class PokemonRepository implements IPokemonRepository {
     async findOne(values: object): Promise<Pokemon> {
         return await this.model.findOne(values).select('-__v -_id').exec()
     }
-    updateOne(id: string, values: object): Promise<Pokemon> {
-        throw new Error('Method not implemented.');
+
+    async updateOne(id: string, values: object): Promise<Pokemon> {
+        await this.model.updateOne(
+            { id: id },
+            {
+                $set:
+                    { ...values }
+            }
+        ).exec()
+        return await this.findOne({ "id": id })
     }
+
     distinct(attribute: string): Promise<any[]> {
         throw new Error('Method not implemented.');
     }
