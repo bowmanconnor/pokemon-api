@@ -33,6 +33,11 @@ describe("PokemonController", () => {
       return pokemon
     }),
 
+    types: jest.fn().mockImplementation(() => {
+      const typesArray = [...pokemons.map((pokemon) => pokemon.types)];
+      const uniqueValues = [...new Set(typesArray.flat())];
+      return uniqueValues
+    }),
   }
 
 
@@ -126,4 +131,13 @@ describe("PokemonController", () => {
     })
   });
 
+  describe("types", () => {
+    it('should return unique values of types', async () => {
+      let result = await pokemonController.types()
+
+      expect(mockService.types).toHaveBeenCalled()
+      expect(result).toBeInstanceOf(Array<String>)
+      expect(result.length).toBeGreaterThan(0)
+    })
+  });
 });

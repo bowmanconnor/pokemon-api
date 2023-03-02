@@ -27,7 +27,7 @@ export class PokemonService implements IPokemonService {
         let values = { "favorite": favorite }
         return await this.PokemonReository.updateOne(id, values);
     }
-    types(): Promise<any[]> {
-        throw new Error('Method not implemented.');
+    async types(): Promise<String[]> {
+        return await this.PokemonReository.distinct("types")
     }
 }
