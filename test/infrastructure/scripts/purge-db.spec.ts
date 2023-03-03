@@ -26,7 +26,6 @@ describe('seed-db', () => {
     });
 
     beforeEach(async () => {
-        // Seed database before each test
         await seed(PokemonModel)
     });
 

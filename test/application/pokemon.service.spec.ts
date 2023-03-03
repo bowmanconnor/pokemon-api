@@ -4,7 +4,7 @@ import { PokemonService } from "../../src/application/service/pokemon.service";
 
 import * as fs from 'fs';
 
-// console.log = function () { };
+console.log = function () { };
 
 describe("PokemonService", () => {
   let pokemonService: PokemonService;
@@ -80,101 +80,7 @@ describe("PokemonService", () => {
     expect(pokemonService).toBeDefined();
   });
 
-  describe("getByID", () => {
-    it('should return a valid pokemon', async () => {
-      // Get pokemon with id "001". Should call mock repository findOne
-      const id = "001"
-      let result = await pokemonService.findByID(id)
-
-      expect(mockRepository.findOne).toHaveBeenCalled()
-      expect(result.id).toBe(id)
-    })
-
-    it('should return an invalid pokemon', async () => {
-      // Get invalid pokemon with id "000". Should call mock repository findOne.
-
-      const id = "000"
-      let result = await pokemonService.findByID(id)
-
-      expect(mockRepository.findOne).toHaveBeenCalled()
-      expect(result).toBe(undefined)
-    })
-  });
-
-  describe("getByName", () => {
-    it('should return a valid pokemon', async () => {
-      // Get pokemon with name "Bulbasaur". Should call mock repository findOne
-      const name = "Bulbasaur"
-      let result = await pokemonService.findByName(name)
-
-      expect(mockRepository.findOne).toHaveBeenCalled()
-      expect(result.name).toBe(name)
-    })
-
-    it('should return an invalid pokemon', async () => {
-      // Get invalid pokemon with id "IBM". Should call mock repository findOne.
-
-      const name = "IBM"
-      let result = await pokemonService.findByName(name)
-
-      expect(mockRepository.findOne).toHaveBeenCalled()
-      expect(result).toBe(undefined)
-    })
-  });
-
-  describe("setFavorite", () => {
-    it('should change a valid pokemons favorite status to true', async () => {
-      // Set pokemon with id "001" favorite status to true. Should call mock repository updateOne
-      const id = "001"
-      const favoriteStatus = true
-      let result = await pokemonService.setFavorite(id, favoriteStatus)
-
-      expect(mockRepository.updateOne).toHaveBeenCalled()
-      expect(result.favorite).toBe(favoriteStatus)
-    })
-
-    it('should change an invalid pokemons favorite status to true', async () => {
-      // Set pokemon with id "000" favorite status to true. Should call mock repository updateOne
-      const id = "000"
-      const favoriteStatus = true
-      let result = await pokemonService.setFavorite(id, favoriteStatus)
-
-      expect(mockRepository.findOne).toHaveBeenCalled()
-      expect(result).toBe(undefined)
-    })
-
-    it('should change a valid pokemons favorite status to false', async () => {
-      // Set pokemon with id "001" favorite status to true. Should call mock repository updateOne
-      const id = "001"
-      const favoriteStatus = false
-      let result = await pokemonService.setFavorite(id, favoriteStatus)
-
-      expect(mockRepository.updateOne).toHaveBeenCalled()
-      expect(result.favorite).toBe(favoriteStatus)
-    })
-
-    it('should change an invalid pokemons favorite status to false', async () => {
-      // Set pokemon with id "000" favorite status to true. Should call mock repository updateOne
-      const id = "000"
-      const favoriteStatus = false
-      let result = await pokemonService.setFavorite(id, favoriteStatus)
-
-      expect(mockRepository.findOne).toHaveBeenCalled()
-      expect(result).toBe(undefined)
-    })
-  });
-
-  describe("types", () => {
-    it('should return distinct values of types', async () => {
-      const attribute = "types"
-      let result = await pokemonService.types()
-
-      expect(mockRepository.distinct).toHaveBeenCalled()
-      expect(result).toBeInstanceOf(Array<String>)
-    })
-  });
-
-  describe("findMany", () => {
+  describe("find", () => {
     it('should return a list of pokemon with no query, limit, skip', async () => {
       let result = await pokemonService.find()
 
@@ -245,8 +151,83 @@ describe("PokemonService", () => {
       expect(mockRepository.findMany).toHaveBeenCalled()
       expect(result.length).toBe(0)
     })
+  })
 
+  describe("findByID", () => {
+    it('should return a valid pokemon', async () => {
+      const id = "001"
+      let result = await pokemonService.findByID(id)
 
+      expect(mockRepository.findOne).toHaveBeenCalled()
+      expect(result.id).toBe(id)
+    })
+
+    it('should return an invalid pokemon', async () => {
+      const id = "000"
+      let result = await pokemonService.findByID(id)
+
+      expect(mockRepository.findOne).toHaveBeenCalled()
+      expect(result).toBe(undefined)
+    })
+  });
+
+  describe("findByName", () => {
+    it('should return a valid pokemon', async () => {
+      const name = "Bulbasaur"
+      let result = await pokemonService.findByName(name)
+
+      expect(mockRepository.findOne).toHaveBeenCalled()
+      expect(result.name).toBe(name)
+    })
+
+    it('should return an invalid pokemon', async () => {
+      const name = "IBM"
+      let result = await pokemonService.findByName(name)
+
+      expect(mockRepository.findOne).toHaveBeenCalled()
+      expect(result).toBe(undefined)
+    })
+  });
+
+  describe("setFavorite", () => {
+    it('should change a valid pokemons favorite status to true', async () => {
+      const id = "001"
+      const favoriteStatus = true
+      let result = await pokemonService.setFavorite(id, favoriteStatus)
+
+      expect(mockRepository.updateOne).toHaveBeenCalled()
+      expect(result.favorite).toBe(favoriteStatus)
+    })
+
+    it('should change an invalid pokemons favorite status to true', async () => {
+      const id = "000"
+      const favoriteStatus = true
+      let result = await pokemonService.setFavorite(id, favoriteStatus)
+
+      expect(mockRepository.findOne).toHaveBeenCalled()
+      expect(result).toBe(undefined)
+    })
+
+    it('should change a valid pokemons favorite status to false', async () => {
+      const id = "001"
+      const favoriteStatus = false
+      let result = await pokemonService.setFavorite(id, favoriteStatus)
+
+      expect(mockRepository.updateOne).toHaveBeenCalled()
+      expect(result.favorite).toBe(favoriteStatus)
+    })
+
+    it('should change an invalid pokemons favorite status to false', async () => {
+      const id = "000"
+      const favoriteStatus = false
+      let result = await pokemonService.setFavorite(id, favoriteStatus)
+
+      expect(mockRepository.findOne).toHaveBeenCalled()
+      expect(result).toBe(undefined)
+    })
+  });
+
+  describe("favorites", () => {
     it('should return an empty list of favorite pokemons', async () => {
       let query = { favorite: true }
       let skip = 0
@@ -269,4 +250,16 @@ describe("PokemonService", () => {
       expect(result.length).toBe(1)
     })
   })
+
+  describe("types", () => {
+    it('should return distinct values of types', async () => {
+      const attribute = "types"
+      let result = await pokemonService.types()
+
+      expect(mockRepository.distinct).toHaveBeenCalled()
+      expect(result).toBeInstanceOf(Array<String>)
+      expect(result.length).toBe(17)
+    })
+  });
+
 });

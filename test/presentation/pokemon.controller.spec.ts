@@ -53,6 +53,30 @@ describe("PokemonController", () => {
 
       favoritePokemons = [pokemon1, pokemon2, pokemon3, pokemon4]
       return favoritePokemons
+    }),
+
+    find: jest.fn().mockImplementation((query: any = {}, skip: number = 0, limit: number = 10) => {
+      let startIndex = skip;
+      const endIndex = startIndex + limit;
+      const { name, ...filterQuery } = query;
+      const filteredPokemons: Array<any> = pokemons.filter(pokemon => {
+        if (name && !(new RegExp(name)).test(pokemon.name)) {
+          return false
+        } else {
+          for (const key in filterQuery) {
+            if (filterQuery.hasOwnProperty(key) && pokemon[key] !== filterQuery[key]) {
+              return false;
+            }
+          }
+        }
+        return true;
+      })
+
+      if (skip > filteredPokemons.length) {
+        startIndex = 0
+      }
+      const paginatedPokemons = filteredPokemons.slice(startIndex, endIndex)
+      return paginatedPokemons
     })
   }
 
@@ -163,6 +187,67 @@ describe("PokemonController", () => {
 
       expect(mockService.favorites).toHaveBeenCalled()
       expect(result.length).toBe(4)
+    })
+  })
+
+  describe("find", () => {
+    it('should return a list of pokemon with no query, limit, skip', async () => {
+      let result = await pokemonController.find({})
+
+      expect(mockService.find).toHaveBeenCalled()
+      expect(result.data.length).toBe(10)
+    })
+
+    it('should return a list of pokemon with limit = 20', async () => {
+      let query = { limit: 20 }
+      let result = await pokemonController.find(query)
+
+      expect(mockService.find).toHaveBeenCalled()
+      expect(result.data.length).toBe(20)
+    })
+
+    it('should return a list of pokemon with passing skip = 5', async () => {
+      let query = { skip: 5 }
+      let result = await pokemonController.find(query)
+
+      expect(mockService.find).toHaveBeenCalled()
+      expect(result.data[0].id).toBe("006")
+    })
+
+    it('should return a list of pokemon with passing one of query {name = Bulb}', async () => {
+      let query = { name: "Bulb" }
+      let result = await pokemonController.find(query)
+
+      expect(mockService.find).toHaveBeenCalled()
+      expect(result.data.length).toBe(1)
+
+    })
+
+    it('should return an empty list of pokemon with passing one of query {name = Connor}', async () => {
+      let query = { name: "Connor" }
+      let result = pokemonController.find(query)
+
+      await expect(result).rejects.toBeInstanceOf(NotFoundException);
+      expect(mockService.find).toHaveBeenCalled()
+
+    })
+
+    it('should return a list of pokemon with multiple queries', async () => {
+      let query = { name: "e", fleeRate: 0.06, limit: 151 }
+      let result = await pokemonController.find(query)
+
+      expect(mockService.find).toHaveBeenCalled()
+      expect(result.data.length).toBe(18)
+
+    })
+
+    it('should return an empty list of pokemon with multiple queries', async () => {
+      let query = { fleeRate: 100, maxCP: 20, maxHP: 3 }
+      let result = pokemonController.find(query)
+
+      await expect(result).rejects.toBeInstanceOf(NotFoundException);
+      expect(mockService.find).toHaveBeenCalled()
+
     })
   })
 });
