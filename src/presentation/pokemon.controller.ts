@@ -1,4 +1,5 @@
-import { BadRequestException, Controller, Get, NotFoundException, Param, Put } from '@nestjs/common';
+import { BadRequestException, Controller, Get, NotFoundException, Param, Put, Query } from '@nestjs/common';
+import { stringify } from 'querystring';
 import { PokemonService } from '../application/service/pokemon.service';
 import { PokemonSummaryDto } from './dto/summaryDTO';
 
@@ -8,6 +9,21 @@ export class PokemonController {
         private readonly PokemonService: PokemonService,
 
     ) { }
+
+    /**
+     * Find many pokemons. Query Pokemon returned with filters.
+     * @param query - query parameters for filtering and pagination
+     */
+    @Get()
+    async find(@Query() query) {
+        const skip = query.skip || "0"
+        const limit = query.limit || "10"
+        const pokemons = await this.PokemonService.find(query, skip, limit)
+        if (pokemons.length == 0) {
+            throw new NotFoundException("No Pokemon match the query: " + stringify(query))
+        }
+        return { skip: skip, limit: limit, data: pokemons.map((p) => new PokemonSummaryDto(p)) }
+    }
 
     /**
      * Get a list of all distinct pokemon types
