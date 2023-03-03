@@ -38,6 +38,22 @@ describe("PokemonController", () => {
       const uniqueValues = [...new Set(typesArray.flat())];
       return uniqueValues
     }),
+
+    favorites: jest.fn().mockImplementation(() => {
+      let favoritePokemons = []
+      let pokemon1 = pokemons.find(p => p.id === "001")
+      let pokemon2 = pokemons.find(p => p.id === "002")
+      let pokemon3 = pokemons.find(p => p.id === "001")
+      let pokemon4 = pokemons.find(p => p.id === "002")
+
+      pokemon1.favorite = true
+      pokemon2.favorite = true
+      pokemon3.favorite = true
+      pokemon4.favorite = true
+
+      favoritePokemons = [pokemon1, pokemon2, pokemon3, pokemon4]
+      return favoritePokemons
+    })
   }
 
 
@@ -140,4 +156,13 @@ describe("PokemonController", () => {
       expect(result.length).toBeGreaterThan(0)
     })
   });
+
+  describe("favorites", () => {
+    it('should return a list of favorites', async () => {
+      let result = await pokemonController.favorites()
+
+      expect(mockService.favorites).toHaveBeenCalled()
+      expect(result.length).toBe(4)
+    })
+  })
 });
