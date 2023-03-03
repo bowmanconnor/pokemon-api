@@ -2,18 +2,6 @@ import { Pokemon } from "../entity/pokemon";
 
 export interface IPokemonService {
     /**
-     * Create a new pokemon.
-     * @param pokemon 
-     */
-    create(pokemon: Pokemon): Promise<Pokemon>;
-
-    /**
-     * Delete one pokemon
-     * @param id 
-     */
-    delete(id: string): Promise<boolean>;
-
-    /**
      * Find many Pokemons
      
      * @param query -  Query can handle filtering returned pokemons by all attributes, 

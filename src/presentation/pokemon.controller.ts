@@ -1,4 +1,4 @@
-import { BadRequestException, Controller, Get, NotFoundException, Param, Put, Query } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query } from '@nestjs/common';
 import { stringify } from 'querystring';
 import { PokemonService } from '../application/service/pokemon.service';
 import { PokemonSummaryDto } from './dto/summaryDTO';
@@ -27,7 +27,10 @@ export class PokemonController {
             }
             return { skip: skip, limit: limit, query: filterQuery, data: pokemons.map((p) => new PokemonSummaryDto(p)) }
         } catch (error) {
-            throw new BadRequestException(`Path '${error.path}' does not exist in Pokemon`)
+            if (error.path) {
+                throw new BadRequestException(`Path '${error.path}' does not exist in Pokemon`)
+            }
+            throw error
         }
     }
 

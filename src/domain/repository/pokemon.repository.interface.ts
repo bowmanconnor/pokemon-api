@@ -2,21 +2,6 @@ import { Pokemon } from "../entity/pokemon";
 
 export interface IPokemonRepository {
     /**
-     * Creates a new Pokemon in the database
-     * 
-     * @param {Pokemon} pokemon - The Pokemon data transfer object
-     * @returns {Promise<Pokemon>} - A promise that resolves with the created Pokemon
-     */
-    create(pokemon: Pokemon): Promise<Pokemon>;
-
-    /**
-     * Delete a pokemon in the database
-     * @param {string} id - The id of the Pokemon to de deleted
-     * @returns {boolean} - A boolean representing if the pokemon was deleted
-     */
-    delete(id: string): Promise<boolean>;
-
-    /**
      * Finds all Pokemons. Query all Pokemons with filters . Handles search Pokemon by name. 
      * Returns close match for name and exact match for all other queries.
      * @param {any} [query] - The query to search for Pokemons
