@@ -24,7 +24,6 @@ describe('seed-db', () => {
     });
 
     beforeEach(async () => {
-        // Purge database before each test
         await purge(PokemonModel)
     });
 
