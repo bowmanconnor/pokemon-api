@@ -16,13 +16,19 @@ export class PokemonController {
      */
     @Get()
     async find(@Query() query) {
-        const skip = query.skip || "0"
-        const limit = query.limit || "10"
-        const pokemons = await this.PokemonService.find(query, skip, limit)
-        if (pokemons.length == 0) {
-            throw new NotFoundException("No Pokemon match the query: " + stringify(query))
+
+        let { skip, limit, ...filterQuery } = query
+        skip = skip || "0"
+        limit = limit || "10"
+        try {
+            const pokemons = await this.PokemonService.find(filterQuery, skip, limit)
+            if (pokemons.length == 0) {
+                throw new NotFoundException("No Pokemon match the query: " + stringify(query))
+            }
+            return { skip: skip, limit: limit, query: filterQuery, data: pokemons.map((p) => new PokemonSummaryDto(p)) }
+        } catch (error) {
+            throw new BadRequestException(`Path '${error.path}' does not exist in Pokemon`)
         }
-        return { skip: skip, limit: limit, data: pokemons.map((p) => new PokemonSummaryDto(p)) }
     }
 
     /**

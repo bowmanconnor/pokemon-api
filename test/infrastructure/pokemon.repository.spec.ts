@@ -1,7 +1,7 @@
 import { TestingModule, Test } from "@nestjs/testing";
 import { PokemonRepository } from "../../src/infrastructure/mongoDB/pokemon.repository";
 import * as fs from 'fs';
-import mongoose, { Model } from "mongoose";
+import mongoose, { Model, MongooseError } from "mongoose";
 import { PokemonDocument, PokemonSchema } from "../../src/infrastructure/mongoDB/schemas/pokemon.schema";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import { seed } from "../../src/infrastructure/scripts/seed-db";
@@ -128,10 +128,9 @@ describe("PokemonRepository", () => {
             // Update pokemon with id "001" with valid options {banana: true}
             const id = "001"
             const values = { "banana": true }
-            let result = await pokemonRepository.updateOne(id, values)
-            console.log(result);
 
-            expect(result).toBe(null)
+            await expect(pokemonRepository.updateOne(id, values)).rejects.toBeInstanceOf(Error);
+
         })
 
         it('should update a valid pokemon with valid values on a populated database', async () => {
@@ -152,9 +151,8 @@ describe("PokemonRepository", () => {
 
             const id = "001"
             const values = { "banana": true }
-            let result = await pokemonRepository.updateOne(id, values)
 
-            await expect(result['banana']).toBe(undefined)
+            await expect(pokemonRepository.updateOne(id, values)).rejects.toBeInstanceOf(Error);
 
         })
 
@@ -175,9 +173,8 @@ describe("PokemonRepository", () => {
 
             const id = "000"
             const values = { "banana": true }
-            let result = await pokemonRepository.updateOne(id, values)
 
-            await expect(result).toBe(null)
+            await expect(pokemonRepository.updateOne(id, values)).rejects.toBeInstanceOf(Error);
         })
     })
 

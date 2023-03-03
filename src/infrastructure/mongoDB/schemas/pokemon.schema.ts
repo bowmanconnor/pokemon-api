@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 import { HeightWeightSchema, EvolutionSchema, EvolutionRequirementsSchema, AttacksSchema, Evolution, EvolutionRequirements, HeightWeight, AttackTypes, Attacks } from './nestSchemas.schema';
 
-@Schema()
+@Schema({ strict: "throw" })
 export class PokemonSchemaClass {
     @Prop({
         required: true,
@@ -31,7 +31,6 @@ export class PokemonSchemaClass {
         type: HeightWeightSchema,
     })
     weight: HeightWeight;
-
 
     @Prop({
         required: true,
@@ -75,6 +74,30 @@ export class PokemonSchemaClass {
 
     @Prop({ required: true, default: false, type: Boolean })
     favorite: boolean;
+
+    @Prop({ type: String })
+    "Pokémon Class": string
+
+    @Prop({ type: String })
+    "LEGENDARY": string
+
+    @Prop({ type: String })
+    "MYTHIC": string
+
+    @Prop({ type: String })
+    "Common Capture Area": string
+
+    @Prop({ type: String })
+    "Asia": string
+
+    @Prop({ type: String })
+    "North America": string
+
+    @Prop({ type: String })
+    "Western Europe": string
+
+    @Prop({ type: String })
+    "Australia, New Zealand": string
 }
 
 export type PokemonDocument = PokemonSchemaClass & Document;
