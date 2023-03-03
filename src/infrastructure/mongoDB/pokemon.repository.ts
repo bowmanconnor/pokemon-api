@@ -10,12 +10,6 @@ export class PokemonRepository implements IPokemonRepository {
     constructor(
         @InjectModel('Pokemon') private readonly model: Model<PokemonDocument>) { }
 
-    create(pokemon: Pokemon): Promise<Pokemon> {
-        throw new Error('Method not implemented.');
-    }
-    delete(id: string): Promise<boolean> {
-        throw new Error('Method not implemented.');
-    }
     async findMany(query: any, skip: number = 0, limit: number = 10): Promise<any> {
         const { name, ...filterQuery } = query
         return await this.model.find({ "name": { "$regex": query.name || "", "$options": "i" }, ...filterQuery }).skip(skip).limit(limit).exec();
