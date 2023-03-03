@@ -4,7 +4,7 @@ import { PokemonService } from "../../src/application/service/pokemon.service";
 
 import * as fs from 'fs';
 
-console.log = function () { };
+// console.log = function () { };
 
 describe("PokemonService", () => {
   let pokemonService: PokemonService;
@@ -38,6 +38,30 @@ describe("PokemonService", () => {
       const uniqueValues = [...new Set(typesArray.flat())];
       return uniqueValues
     }),
+
+    findMany: jest.fn().mockImplementation((query: any = {}, skip: number = 0, limit: number = 10) => {
+      let startIndex = skip;
+      const endIndex = startIndex + limit;
+      const { name, ...filterQuery } = query;
+      const filteredPokemons: Array<any> = pokemons.filter(pokemon => {
+        if (name && !(new RegExp(name)).test(pokemon.name)) {
+          return false
+        } else {
+          for (const key in filterQuery) {
+            if (filterQuery.hasOwnProperty(key) && pokemon[key] !== filterQuery[key]) {
+              return false;
+            }
+          }
+        }
+        return true;
+      })
+
+      if (skip > filteredPokemons.length) {
+        startIndex = 0
+      }
+      const paginatedPokemons = filteredPokemons.slice(startIndex, endIndex)
+      return paginatedPokemons
+    })
   }
 
   beforeAll(async () => {
@@ -149,4 +173,77 @@ describe("PokemonService", () => {
       expect(result).toBeInstanceOf(Array<String>)
     })
   });
+
+  describe("findMany", () => {
+    it('should return a list of pokemon with no query, limit, skip', async () => {
+      let result = await pokemonService.find()
+
+      expect(mockRepository.findMany).toHaveBeenCalled()
+      expect(result.length).toBe(10)
+    })
+
+    it('should return a list of pokemon with limit = 20', async () => {
+      let query = {}
+      let skip = 0
+      let limit = 20
+      let result = await pokemonService.find(query, skip, limit)
+
+      expect(mockRepository.findMany).toHaveBeenCalled()
+      expect(result.length).toBe(20)
+    })
+
+    it('should return a list of pokemon with passing skip = 5', async () => {
+      let query = {}
+      let skip = 5
+      let limit = 10
+      let result = await pokemonService.find(query, skip, limit)
+
+      expect(mockRepository.findMany).toHaveBeenCalled()
+      expect(result.length).toBe(10)
+      expect(result[0].id).toBe("006")
+    })
+
+    it('should return a list of pokemon with passing one of query {name = Bulb}', async () => {
+      let query = { name: "Bulb" }
+      let skip = 0
+      let limit = 10
+      let result = await pokemonService.find(query, skip, limit)
+
+      expect(mockRepository.findMany).toHaveBeenCalled()
+      expect(result.length).toBe(1)
+
+    })
+
+    it('should return an empty list of pokemon with passing one of query {name = Connor}', async () => {
+      let query = { name: "Connor" }
+      let skip = 0
+      let limit = 10
+      let result = await pokemonService.find(query, skip, limit)
+
+      expect(mockRepository.findMany).toHaveBeenCalled()
+      expect(result.length).toBe(0)
+
+    })
+
+    it('should return a list of pokemon with multiple queries', async () => {
+      let query = { name: "e", fleeRate: 0.06 }
+      let skip = 0
+      let limit = 151
+      let result = await pokemonService.find(query, skip, limit)
+
+      expect(mockRepository.findMany).toHaveBeenCalled()
+      expect(result.length).toBe(18)
+
+    })
+
+    it('should return an empty list of pokemon with multiple queries', async () => {
+      let query = { fleeRate: 100, maxCP: 20, maxHP: 3 }
+      let skip = 0
+      let limit = 151
+      let result = await pokemonService.find(query, skip, limit)
+
+      expect(mockRepository.findMany).toHaveBeenCalled()
+      expect(result.length).toBe(0)
+    })
+  })
 });
