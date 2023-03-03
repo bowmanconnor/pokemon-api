@@ -1,31 +1,18 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# Pokemon-api
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+A [Nest](https://github.com/nestjs/nest) project that handles creating a database and exposing that database to a API.
 
+## Setup
+This project uses a MongoDB database to store and retrieve data. In order for the `config.service.ts` to properly connect to a Mongo database. Create a `.env` file such as 
+```
+PORT = "3000"
+MONGO_URI = 'mongodb+srv://{user}:{password}{database}/?retryWrites=true&w=majority'
+```
+
+Be sure to replace the `user`, `password`, and `database` values with the provided values from MongoDB.
 ## Installation
 
 ```bash
@@ -37,37 +24,65 @@ $ npm install
 ```bash
 # development
 $ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
 
-## Test
+## Tests
 
 ```bash
 # unit tests
 $ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
-## Support
+## User stories examples
+### Obtain a pokemon by id
+```
+localhost:3000/pokemon/001
+```
+### Obtain list of pokemons (TIP: pagination)
+```
+localhost:3000/pokemon 
+localhost:3000/pokemon?limit=25 
+localhost:3000/pokemon?skip=5&limit=20
+```
+### Obtain a pokemon by name
+```
+localhost:3000/pokemon/name/Bulbasaur
+```
+### Obtain list of pokemons with different filters
+```
+localhost:3000/pokemon?types=Flying&fleeRate=0.06
+localhost:3000/pokemon?name=a
+```
+### Allow obtain pokemon types
+```
+localhost:3000/pokemon/types
+```
+### Allow add a pokemon as favourite
+```
+localhost:3000/pokemon/001/favorite
+```
+### Allow remove a pokemon as favourite
+```
+localhost:3000/pokemon/001/unfavorite
+```
+### Allow obtain list of favourite pokemons
+```
+localhost:3000/pokemon/favorites
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Architecture
+This project uses ideas heavily influenced by Domain Driven Design (DDD). 
 
-## Stay in touch
+### Domain layer
+The `domain` layer handles defining all business models and logic. Here we define our `pokemon.ts` entity that is used in the application. This layer also handles defining the `pokemon.service.interface.ts` and `pokemon.repository.interface.ts` interfaces that are to be used by the `application` and `infrastructure` layer. This layer is designed to be free of exteneral dependacies and acts as the building block for the rest of the project.
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Application layer
+The `application` layer handles executing the business logic defined in the `domain` layer. Here we implement our service interface into `pokemon.service.ts`. This service file depends on the `pokemon.repository.ts` to implement and execute all the service functions required by the domain layer. This layer is also home to the `pokemon.module.ts` which handles injecting the service, repository, controller, and database model into the pokemon module.
 
-## License
+### Infrastructure layer
+The `infrastructure` layer accesses external services such as the database. This layer implements the repository interface into `pokemon.repository.ts`. This repository handles making requests to the MongoDB database. This layer is also home to our `seed-db.ts`, `purge-db.ts`, and `connect-db.ts` scripts. This scripts are responsible to seeding, purging, and connecting to the database respectively. The initial data `pokemons.JSON` is also stored in this layer. The infrastructure layer utilizing the `config.service.ts` to load environment variables from the `.env` file into the project.
+### Presentation layer
+The `presentation` layer handles exposing the API to the user. The `pokemon.controller.ts` is located here which defines routes and access the `pokemon.service.ts` methods in order to handles user input and requests. The controller is also responsible for returning exceptions to the user. 
 
-Nest is [MIT licensed](LICENSE).
+## Database
+MongoDB and mongoose were used in this project for their ease of use and well documented documentation. 
