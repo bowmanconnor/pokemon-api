@@ -5,14 +5,6 @@
 
 A [Nest](https://github.com/nestjs/nest) project that handles creating a database and exposing that database to an API.
 
-## Setup
-This project uses a MongoDB database to store and retrieve data. In order for the `config.service.ts` to properly connect to a Mongo database. Create a `.env` file such as
-```
-PORT = "3000"
-MONGO_URI = 'mongodb+srv://{user}:{password}{database}/?retryWrites=true&w=majority'
-```
-
-Be sure to replace the `user`, `password`, and `database` values with the provided values from MongoDB.
 ## Installation
 
 ```bash
@@ -20,7 +12,19 @@ $ npm install
 ```
 
 ## Running the app
+This project uses a MongoDB database to store and retrieve data. In order for the `config.service.ts` to properly connect to a Mongo database. Create a `.env` file such as
+```
+PORT = "3000"
+MONGO_URI = 'mongodb+srv://{user}:{password}{database}/?retryWrites=true&w=majority'
+```
+Be sure to replace the `user`, `password`, and `database` values with the provided values from MongoDB.
 
+Seed the database you connected
+```bash
+$ npm run seed
+```
+
+Run the app
 ```bash
 # development
 $ npm run start
