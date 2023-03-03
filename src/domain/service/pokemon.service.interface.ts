@@ -2,7 +2,7 @@ import { Pokemon } from "../entity/pokemon";
 
 export interface IPokemonService {
     /**
-     * Find many Pokemons
+     * Find many Pokemons. Handles filtering. Handles get all favorites
      
      * @param query -  Query can handle filtering returned pokemons by all attributes, 
      * including by name and by favorite.
