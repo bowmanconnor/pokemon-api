@@ -2,7 +2,7 @@ import { Pokemon } from "../entity/pokemon";
 
 export interface IPokemonRepository {
     /**
-     * Finds all Pokemons. Query all Pokemons with filters . Handles search Pokemon by name. 
+     * Finds all Pokemons. Query all Pokemons with filters. Handles search Pokemon by name searching wiith partial mapping. 
      * Returns close match for name and exact match for all other queries.
      * @param {any} [query] - The query to search for Pokemons
      * @param {number} [skip=0] - The number of Pokemons to skip     
@@ -12,7 +12,7 @@ export interface IPokemonRepository {
     findMany(query?: any, skip?: number, limit?: number): Promise<any>;
 
     /**
-     * Finds one Pokemon in the database by the inputted dict
+     * Finds one Pokemon in the database by the input values
      * 
      * @param {object} values - The Pokemon's ID
      * @returns {Promise<Pokemon>} - A promise that resolves with the found Pokemon
