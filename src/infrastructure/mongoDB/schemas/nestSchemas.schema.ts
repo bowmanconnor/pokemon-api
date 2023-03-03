@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-@Schema()
+@Schema({ strict: "throw" })
 export class HeightWeight {
     @Prop()
     _id: false;
@@ -42,7 +42,7 @@ export class Evolution {
 export const EvolutionSchema = SchemaFactory.createForClass(Evolution);
 
 
-@Schema()
+@Schema({ strict: "throw" })
 export class EvolutionRequirements {
     @Prop()
     _id: false;
@@ -63,7 +63,7 @@ export const EvolutionRequirementsSchema = SchemaFactory.createForClass(Evolutio
 
 
 
-@Schema()
+@Schema({ strict: "throw" })
 export class AttackTypes {
     @Prop()
     _id: false;
@@ -89,7 +89,7 @@ export class AttackTypes {
 }
 export const AttackTypesSchema = SchemaFactory.createForClass(AttackTypes);
 
-@Schema()
+@Schema({ strict: "throw" })
 export class Attacks {
     @Prop()
     _id: false;

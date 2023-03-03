@@ -14,7 +14,7 @@ export class Pokemon {
         maximum: string
     };
     fleeRate: number;
-    previousEvolutions?: {
+    "Previous evolution(s)"?: {
         id: number,
         name: string
     }[]
@@ -41,5 +41,14 @@ export class Pokemon {
         }[]
     }
     favorite: boolean;
+
+    "Pokémon Class"?: string
+    "LEGENDARY"?: string
+    "MYTHIC"?: string
+    "Common Capture Area"?: string
+    "Asia"?: string
+    "North America"?: string
+    "Western Europe"?: string
+    "Australia, New Zealand"?: string
 }
 
