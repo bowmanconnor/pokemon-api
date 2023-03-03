@@ -12,7 +12,7 @@ export class PokemonService implements IPokemonService {
     delete(id: string): Promise<boolean> {
         throw new Error('Method not implemented.');
     }
-    async find(query: any, skip: number, limit: number): Promise<Pokemon[]> {
+    async find(query?: any, skip?: number, limit?: number): Promise<Pokemon[]> {
         return await this.PokemonReository.findMany(query, skip, limit)
     }
     async findByID(id: string): Promise<Pokemon> {
