@@ -27,6 +27,10 @@ export class PokemonService implements IPokemonService {
         let values = { "favorite": favorite }
         return await this.PokemonReository.updateOne(id, values);
     }
+    async favorites(): Promise<Pokemon[]> {
+        let values = { "favorite": true }
+        return await this.PokemonReository.findMany(values);
+    }
     async types(): Promise<String[]> {
         return await this.PokemonReository.distinct("types")
     }

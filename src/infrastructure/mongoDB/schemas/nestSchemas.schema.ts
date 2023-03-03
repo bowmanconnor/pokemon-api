@@ -22,7 +22,7 @@ export class HeightWeight {
 export type HeightWeightDocument = HeightWeight & Document;
 export const HeightWeightSchema = SchemaFactory.createForClass(HeightWeight);
 
-@Schema()
+@Schema({ strict: 'throw' })
 export class Evolution {
     @Prop()
     _id: false;

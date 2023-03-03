@@ -31,10 +31,22 @@ export class PokemonController {
     @Get('types')
     async types() {
         const types = await this.PokemonService.types();
-        if (!types) {
+        if (types.length == 0) {
             throw new NotFoundException("No types found")
         }
         return types
+    }
+
+    /**
+     * Get a list of all favorite pokemons
+     */
+    @Get('favorites')
+    async favorites() {
+        const favorites = await this.PokemonService.favorites();
+        if (favorites.length == 0) {
+            throw new NotFoundException("No favorites found")
+        }
+        return favorites.map((p) => new PokemonSummaryDto(p))
     }
 
     /**

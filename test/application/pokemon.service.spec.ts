@@ -245,5 +245,28 @@ describe("PokemonService", () => {
       expect(mockRepository.findMany).toHaveBeenCalled()
       expect(result.length).toBe(0)
     })
+
+
+    it('should return an empty list of favorite pokemons', async () => {
+      let query = { favorite: true }
+      let skip = 0
+      let limit = 151
+      let result = await pokemonService.find(query, skip, limit)
+
+      expect(mockRepository.findMany).toHaveBeenCalled()
+      expect(result.length).toBe(0)
+    })
+
+    it('should return a list of favorite pokemons', async () => {
+      await pokemonService.setFavorite("001", true)
+
+      let query = { favorite: true }
+      let skip = 0
+      let limit = 151
+      let result = await pokemonService.find(query, skip, limit)
+
+      expect(mockRepository.findMany).toHaveBeenCalled()
+      expect(result.length).toBe(1)
+    })
   })
 });
